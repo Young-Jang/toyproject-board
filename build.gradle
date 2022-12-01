@@ -32,6 +32,9 @@ dependencies {
 	implementation 'javax.json:javax.json-api:1.1.4'
 	implementation 'org.glassfish:javax.json:1.1.4'
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr353'
+
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
 }
 
 tasks.named('test') {
