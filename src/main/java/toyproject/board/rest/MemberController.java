@@ -5,18 +5,22 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import toyproject.board.application.CreateMemberService;
 import toyproject.board.application.PatchMemberService;
+import toyproject.board.rest.DTO.CreateMemberReqDTO;
+import toyproject.board.rest.transform.CreateMemberReqDTOMapper;
 
 import javax.json.JsonMergePatch;
 
 @RestController
 @RequiredArgsConstructor
-public class HelloController {
+public class MemberController {
 
     private final PatchMemberService patchMemberService;
+    private final CreateMemberService createMemberService;
+    private final CreateMemberReqDTOMapper createMemberReqDTOMapper;
 
     @GetMapping("hello")
     public String hello(Model model){
@@ -35,4 +39,12 @@ public class HelloController {
         patchMemberService.patchMemberInfo(id,jsonMergePatch);
         return "hello";
     }
+
+    @PostMapping("/member")
+    public String createMemer(@RequestBody CreateMemberReqDTO createMemberReqDTO){
+        createMemberService.createMember(createMemberReqDTOMapper.toCommand(createMemberReqDTO));
+        return "hello";
+    }
+
+
 }

@@ -2,9 +2,11 @@ package toyproject.board.domain.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import toyproject.board.domain.command.CreateMemberCommand;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
@@ -12,8 +14,12 @@ import javax.persistence.Id;
 @Setter
 public class Member {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String userId;
+
+    private String password;
 
     private String username;
 
@@ -22,6 +28,15 @@ public class Member {
     private String phone;
 
     private String address;
+
+    public Member(CreateMemberCommand createMemberCommand){
+        this.userId = createMemberCommand.getUserId();
+        this.password = createMemberCommand.getPassword();
+        this.username = createMemberCommand.getUsername();
+        this.email = createMemberCommand.getEmail();
+        this.phone = createMemberCommand.getPhone();
+        this.address = createMemberCommand.getAddress();
+    }
 
     public void patchMember(Member member){
         this.username = member.getUsername();

@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import toyproject.board.domain.model.Member;
 import toyproject.board.domain.repository.MemberRepository;
 
+import static toyproject.util.testMockData.commonCreateMemberCommand;
+
 @SpringBootTest
 class MemberRepositoryTest {
 
@@ -20,16 +22,13 @@ class MemberRepositoryTest {
     @Rollback(false)
     public void testMember() throws Exception{
         //given
-        Member member = new Member();
-        member.setUsername("memberA");
+        Member member = new Member(commonCreateMemberCommand());
 
         //when
-        Long saveId = memberRepository.save(member);
-        Member findMember = memberRepository.find(saveId);
+        Member saveMember = memberRepository.save(member);
 
         //then
-        Assertions.assertThat(findMember.getId().equals(member.getId()));
-        Assertions.assertThat(findMember.getUsername().equals(member.getUsername()));
+        Assertions.assertThat(saveMember.getId().equals(member.getId()));
     }
 
 }
