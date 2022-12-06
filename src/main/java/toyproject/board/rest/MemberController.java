@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import toyproject.board.application.CreateMemberService;
 import toyproject.board.application.PatchMemberService;
@@ -41,7 +42,7 @@ public class MemberController {
     }
 
     @PostMapping("/member")
-    public String createMemer(@RequestBody CreateMemberReqDTO createMemberReqDTO){
+    public String createMemer(@Validated @RequestBody CreateMemberReqDTO createMemberReqDTO){
         createMemberService.createMember(createMemberReqDTOMapper.toCommand(createMemberReqDTO));
         return "hello";
     }
