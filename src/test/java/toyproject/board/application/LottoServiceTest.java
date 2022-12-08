@@ -7,9 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import toyproject.board.infrastructure.LottoFeignClient;
 
-import javax.json.JsonObject;
-import javax.json.stream.JsonParser;
-import java.util.ArrayList;
+import org.json.simple.JSONObject;
+
 import java.util.List;
 
 @SpringBootTest
@@ -27,11 +26,22 @@ class LottoServiceTest {
         int drwNo = 100;
         String response = lottoFeignClient.getLottoNum(drwNo);
         JSONParser jsonParser = new JSONParser();
-        JsonObject jsonObject = (JsonObject) jsonParser.parse(response);
+        Object obj = jsonParser.parse(response);
+        JSONObject jsonObject = (JSONObject) obj;
 
         jsonObject.get("drwtNo");
-
-        lottoService.createLottoNumber();
+        int count = 0;
+        for(int i = 1; i < 7; i++){
+            List<Integer> lottoList = lottoService.createLottoNumber();
+            System.out.println(lottoList.get(i));
+            System.out.println(jsonObject.get("drwtNo"+i));
+            if(!lottoList.get(i).equals(jsonObject.get("drwtNo"+i))){
+                i=1;
+                continue;
+            }
+            count++;
+        }
+        System.out.println(count);
 
     }
 }
