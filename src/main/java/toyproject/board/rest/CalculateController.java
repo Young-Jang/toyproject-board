@@ -25,9 +25,7 @@ public class CalculateController {
 
 
     @GetMapping("get-lotto")
-    public ResponseEntity<Object> getLotto(){
-        return new ResponseEntity(lottoService.createLottoNumber().stream()
-                .map(String::valueOf)
-                .collect(Collectors.joining("-","[","]")), HttpStatus.OK);
+    public ResponseEntity<Object> getLotto(@RequestParam int count){
+        return new ResponseEntity(lottoService.createLottoNumber(count), HttpStatus.OK);
     }
 }
