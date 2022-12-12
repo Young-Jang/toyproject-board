@@ -1,6 +1,6 @@
 package toyproject.util;
 
-import toyproject.board.domain.command.CreateMemberCommand;
+import toyproject.almigty.board.domain.command.CreateMemberCommand;
 
 public class testMockData {
     public static CreateMemberCommand commonCreateMemberCommand(){
