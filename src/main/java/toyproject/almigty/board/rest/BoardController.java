@@ -4,7 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import toyproject.almigty.board.application.BoardService;
 import toyproject.almigty.board.rest.DTO.BoardDto;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor

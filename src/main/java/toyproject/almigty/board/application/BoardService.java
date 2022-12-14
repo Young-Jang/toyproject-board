@@ -18,7 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BoardService {
     //boardRepository 객체 생성
-    private BoardRepository boardRepository;
+    private final BoardRepository boardRepository;
 
 
     private static final int BLOCK_PAGE_NUM_COUNT = 5; // 블럭에 존재하는 페이지 번호 수
