@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface BoardRepository {
     List<Board> findByTitleContaining(String keyword);
     Board findByUser(User user);
-    Page<Board> findAll(PageRequest pageRequest);
+    Page<Board> findAllBy(PageRequest pageRequest);
     Optional<Board> findById(Long id);
     Board save(Board board);
     void deleteById(Long id);
