@@ -5,6 +5,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr353.JSR353Module;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.request.RequestContextListener;
 
 @Configuration
 public class ObjectMapperConfig {
@@ -14,5 +15,10 @@ public class ObjectMapperConfig {
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.registerModule(new JSR353Module()); //jsr-353,jsr-374 module
         return objectMapper;
+    }
+
+    @Bean
+    public RequestContextListener requestContextListener(){
+        return new RequestContextListener();
     }
 }
