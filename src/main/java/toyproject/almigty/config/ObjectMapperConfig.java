@@ -17,8 +17,4 @@ public class ObjectMapperConfig {
         return objectMapper;
     }
 
-    @Bean
-    public RequestContextListener requestContextListener(){
-        return new RequestContextListener();
-    }
 }

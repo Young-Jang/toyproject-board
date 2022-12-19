@@ -1,6 +1,7 @@
 package toyproject.almigty.board.rest;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("board")
+@Slf4j
 public class BoardController {
     private final BoardService boardService;
 
@@ -22,6 +24,7 @@ public class BoardController {
 
     @GetMapping({"", "/list"})
     public String list(Model model, @RequestParam(value="page", defaultValue = "1") Integer pageNum) {
+        log.info("[GET] /list api 호출");
         List<BoardDto> boardList = boardService.getBoardlist(pageNum);
         Integer[] pageList = boardService.getPageList(pageNum);
 
@@ -35,6 +38,7 @@ public class BoardController {
 
     @GetMapping("/post")
     public String write() {
+        log.info("[GET] /post api 호출");
         return "board/write";
     }
 
@@ -43,6 +47,7 @@ public class BoardController {
 
     @PostMapping("/post")
     public String write(BoardDto boardDto) {
+        log.info("[POST] /post api 호출");
         boardService.savePost(boardDto);
         return "redirect:/board/list";
     }
@@ -52,6 +57,8 @@ public class BoardController {
 
     @GetMapping("/post/{no}")
     public String detail(@PathVariable("no") Long no, Model model) {
+        log.info("[GET] /post/{no} api 호출");
+
         BoardDto boardDTO = boardService.getPost(no);
 
         model.addAttribute("boardDto", boardDTO);
@@ -62,6 +69,8 @@ public class BoardController {
 
     @GetMapping("/post/edit/{no}")
     public String edit(@PathVariable("no") Long no, Model model) {
+        log.info("[GET] /post/edit/{no} api 호출");
+
         BoardDto boardDTO = boardService.getPost(no);
 
         model.addAttribute("boardDto", boardDTO);
@@ -70,8 +79,10 @@ public class BoardController {
 
     // 위는 GET 메서드이며, PUT 메서드를 이용해 게시물 수정한 부분에 대해 적용
 
-    @PutMapping("/post/edit/{no}")
+    @PostMapping("/post/edit")
     public String update(BoardDto boardDTO) {
+        log.info("[Put] /post/edit/{no} api 호출");
+
         boardService.savePost(boardDTO);
 
         return "redirect:/board/list";
@@ -79,8 +90,10 @@ public class BoardController {
 
     // 게시물 삭제는 deletePost 메서드를 사용하여 간단하게 삭제할 수 있다.
 
-    @DeleteMapping("/post/{no}")
+    @PostMapping("/post/delete/{no}")
     public String delete(@PathVariable("no") Long no) {
+        log.info("[Delete] /post/{no} api 호출");
+
         boardService.deletePost(no);
 
         return "redirect:/board/list";
@@ -90,8 +103,10 @@ public class BoardController {
     // keyword를 view로부터 전달 받고
     // Service로부터 받은 boardDtoList를 model의 attribute로 전달해준다.
 
-    @GetMapping("/board/search")
+    @GetMapping("/search")
     public String search(@RequestParam(value="keyword") String keyword, Model model) {
+        log.info("[Get] /board/search api 호출");
+
         List<BoardDto> boardDtoList = boardService.searchPosts(keyword);
 
         model.addAttribute("boardList", boardDtoList);
