@@ -22,7 +22,7 @@ public class BoardDto {
 
     public Board toEntity(){
         Board board = Board.builder()
-                .id(id)
+                .boardId(id)
                 .writer(writer)
                 .title(title)
                 .content(content)

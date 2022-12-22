@@ -27,7 +27,7 @@ public class BoardService {
     // Entity -> Dto로 변환
     private BoardDto convertEntityToDto(Board board) {
         return BoardDto.builder()
-                .id(board.getId())
+                .id(board.getBoardId())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .writer(board.getWriter())
@@ -59,7 +59,7 @@ public class BoardService {
         Board board = boardWrapper.get();
 
         BoardDto boardDTO = BoardDto.builder()
-                .id(board.getId())
+                .id(board.getBoardId())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .writer(board.getWriter())
@@ -72,7 +72,7 @@ public class BoardService {
 
     @Transactional
     public Long savePost(BoardDto boardDto) {
-        return boardRepository.save(boardDto.toEntity()).getId();
+        return boardRepository.save(boardDto.toEntity()).getBoardId();
     }
 
     @Transactional
