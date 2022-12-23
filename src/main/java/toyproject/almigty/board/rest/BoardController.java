@@ -2,10 +2,15 @@ package toyproject.almigty.board.rest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import toyproject.almigty.board.application.BoardService;
+import toyproject.almigty.board.application.GetUserInfoService;
+import toyproject.almigty.board.application.RestJsonService;
 import toyproject.almigty.board.rest.DTO.BoardDto;
 
 import java.util.List;
@@ -114,5 +119,59 @@ public class BoardController {
         model.addAttribute("boardList", boardDtoList);
 
         return "board/list";
+    }
+
+
+    @GetMapping("/home")
+    public String home(Model model){
+        return "board/home";
+    }
+
+    @GetMapping("/receiveAC")
+    public String receiveAC(@RequestParam("code") String code, Model model) throws ParseException {
+        RestJsonService restJsonService = new RestJsonService();
+
+        //access_token이 포함된 JSON String을 받아온다.
+        String accessTokenJsonData = restJsonService.getAccessTokenJsonData(code);
+        if(accessTokenJsonData.equals("error")) return "error";
+
+        //JSON String -> JSON Object
+        JSONObject accessTokenJsonObject = convertToJsonObject(accessTokenJsonData);
+
+        //access_token 추출
+        String accessToken = accessTokenJsonObject.get("access_token").toString();
+
+
+        //유저 정보가 포함된 JSON String을 받아온다.
+        GetUserInfoService getUserInfoService = new GetUserInfoService();
+        String userInfo = getUserInfoService.getUserInfo(accessToken);
+
+        //JSON String -> JSON Object
+        JSONObject userInfoJsonObject = convertToJsonObject(userInfo);
+
+        //유저의 Email 추출
+        JSONObject propertiesJsonObject = (JSONObject)userInfoJsonObject.get("properties");
+        String profileImage = propertiesJsonObject.get("profile_image").toString();
+
+        JSONObject kakaoAccountJsonObject = (JSONObject)userInfoJsonObject.get("kakao_account");
+
+        String email;
+        try{
+            email = kakaoAccountJsonObject.get("email").toString();
+        }
+        catch (Exception e){
+            email = "약관 동의 안함";
+        }
+
+        model.addAttribute("profile_image", profileImage);
+        model.addAttribute("email", email);
+
+        return "success";
+    }
+
+    private JSONObject convertToJsonObject(String jsonString) throws ParseException {
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse( jsonString );
+        return (JSONObject) obj;
     }
 }
