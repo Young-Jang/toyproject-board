@@ -7,9 +7,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 public class RestJsonService {
     private final String GRANT_TYPE = "authorization_code";
-    private final String CLIENT_ID = "50ca5e8cf40713abcab868ed9ed3047d";
-    private final String REDIRECT_URI = "http://kimcoder.kro.kr:8080/receiveAC";
-    private final String CLIENT_SECRET = "6hTKHMv5ZgpMvGqMwNndX238yKdR1o48";
+    private final String CLIENT_ID = "0fbfd4e548e566fa4c58d2667cf5a0d9";
+    private final String REDIRECT_URI = "http://localhost:8080/board/receiveAC";
+    private final String CLIENT_SECRET = "aYCwIVnIakAooFY8536QXqjYkuIx5sEi";
     private final String TOKEN_URL = "https://kauth.kakao.com/oauth/token";
 
     public String getAccessTokenJsonData(String code) {

@@ -18,11 +18,11 @@ import java.util.List;
 import java.util.Set;
 
 @SpringBootTest
-@RequiredArgsConstructor
 class LottoServiceTest {
-
-    private final LottoService lottoService;
-    private final LottoFeignClient lottoFeignClient;
+    @Autowired
+    private LottoService lottoService;
+    @Autowired
+    private LottoFeignClient lottoFeignClient;
 
     private Set<String> set;
 

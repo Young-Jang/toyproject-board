@@ -135,6 +135,8 @@ public class BoardController {
         String accessTokenJsonData = restJsonService.getAccessTokenJsonData(code);
         if(accessTokenJsonData.equals("error")) return "error";
 
+        log.info(accessTokenJsonData);
+
         //JSON String -> JSON Object
         JSONObject accessTokenJsonObject = convertToJsonObject(accessTokenJsonData);
 
@@ -171,7 +173,6 @@ public class BoardController {
 
     private JSONObject convertToJsonObject(String jsonString) throws ParseException {
         JSONParser parser = new JSONParser();
-        Object obj = parser.parse( jsonString );
-        return (JSONObject) obj;
+        return  (JSONObject) parser.parse(jsonString);
     }
 }
