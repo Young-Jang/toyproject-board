@@ -28,6 +28,8 @@ import static toyproject.almigty.common.constants.BoardApiUrl.*;
 @Slf4j
 public class BoardController {
     private final BoardService boardService;
+    private final RestJsonService restJsonService;
+    private final GetUserInfoService getUserInfoService;
 
     // 게시판
     // 게시글 목록
@@ -134,62 +136,20 @@ public class BoardController {
 
     @GetMapping("/receiveAC")
     public String receiveAC(@RequestParam("code") String code, Model model){
-        RestJsonService restJsonService = new RestJsonService();
-
-        //access_token이 포함된 JSON String을 받아온다.
         String accessTokenJsonData = restJsonService.getAccessTokenJsonData(code);
         if(accessTokenJsonData.equals("error")) return "error";
-
-        log.info(accessTokenJsonData);
-
-        //JSON String -> JSON Object
         Gson gson = new Gson();
         Map<String, String> jacksonMap = gson.fromJson(accessTokenJsonData,new TypeToken<Map<String,String>>(){}.getType());
-
-        log.info(jacksonMap.toString());
-
-
-        //유저 정보가 포함된 JSON String을 받아온다.
-        GetUserInfoService getUserInfoService = new GetUserInfoService();
         String userInfo = getUserInfoService.getUserInfo(jacksonMap.get("access_token"));
-
-        //JSON String -> JSON Object
-     //   Map<String, String> userInfoMap = gson.fromJson(userInfo,new TypeToken<Map<String,String>>(){}.getType());
-
-        //유저의 Email 추출
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(userInfo);
-
         JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
         JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
-
-        String nickname = properties.getAsJsonObject().get("nickname").getAsString();
-        String profileImage = properties.getAsJsonObject().get("profile_image").getAsString();
-        String email = kakao_account.getAsJsonObject().get("email").getAsString();
-
         model.addAttribute("accessToken", jacksonMap.get("access_token"));
-        model.addAttribute("nickname", nickname);
-        model.addAttribute("email", email);
-        model.addAttribute("profileImage", profileImage);
-
-
+        model.addAttribute("nickname", properties.getAsJsonObject().get("nickname").getAsString());
+        model.addAttribute("email", kakao_account.getAsJsonObject().get("email").getAsString());
+        model.addAttribute("profileImage", properties.getAsJsonObject().get("profile_image").getAsString());
         log.info(userInfo);
-//
-//        String profileImage = propertiesJsonObject.get("profile_image").toString();
-//
-//        JSONObject kakaoAccountJsonObject = (JSONObject)userInfoJsonObject.get("kakao_account");
-//
-//        String email;
-//        try{
-//            email = kakaoAccountJsonObject.get("email").toString();
-//        }
-//        catch (Exception e){
-//            email = "약관 동의 안함";
-//        }
-//
-//        model.addAttribute("profile_image", profileImage);
-//        model.addAttribute("email", email);
-
         return "board/list";
     }
 }

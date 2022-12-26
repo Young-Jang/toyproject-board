@@ -1,10 +1,12 @@
 package toyproject.almigty.board.application;
 
 import org.springframework.http.*;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 
+@Service
 public class RestJsonService {
     private final String GRANT_TYPE = "authorization_code";
     private final String CLIENT_ID = "0fbfd4e548e566fa4c58d2667cf5a0d9";
