@@ -1,10 +1,14 @@
 package toyproject.almigty.board.rest;
 
+import aj.org.objectweb.asm.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +18,7 @@ import toyproject.almigty.board.application.RestJsonService;
 import toyproject.almigty.board.rest.DTO.BoardDto;
 
 import java.util.List;
+import java.util.Map;
 
 import static toyproject.almigty.common.constants.BoardApiUrl.*;
 
@@ -128,7 +133,7 @@ public class BoardController {
     }
 
     @GetMapping("/receiveAC")
-    public String receiveAC(@RequestParam("code") String code, Model model) throws ParseException {
+    public String receiveAC(@RequestParam("code") String code, Model model){
         RestJsonService restJsonService = new RestJsonService();
 
         //access_token이 포함된 JSON String을 받아온다.
@@ -138,41 +143,53 @@ public class BoardController {
         log.info(accessTokenJsonData);
 
         //JSON String -> JSON Object
-        JSONObject accessTokenJsonObject = convertToJsonObject(accessTokenJsonData);
+        Gson gson = new Gson();
+        Map<String, String> jacksonMap = gson.fromJson(accessTokenJsonData,new TypeToken<Map<String,String>>(){}.getType());
 
-        //access_token 추출
-        String accessToken = accessTokenJsonObject.get("access_token").toString();
+        log.info(jacksonMap.toString());
 
 
         //유저 정보가 포함된 JSON String을 받아온다.
         GetUserInfoService getUserInfoService = new GetUserInfoService();
-        String userInfo = getUserInfoService.getUserInfo(accessToken);
+        String userInfo = getUserInfoService.getUserInfo(jacksonMap.get("access_token"));
 
         //JSON String -> JSON Object
-        JSONObject userInfoJsonObject = convertToJsonObject(userInfo);
+     //   Map<String, String> userInfoMap = gson.fromJson(userInfo,new TypeToken<Map<String,String>>(){}.getType());
 
         //유저의 Email 추출
-        JSONObject propertiesJsonObject = (JSONObject)userInfoJsonObject.get("properties");
-        String profileImage = propertiesJsonObject.get("profile_image").toString();
+        JsonParser parser = new JsonParser();
+        JsonElement element = parser.parse(userInfo);
 
-        JSONObject kakaoAccountJsonObject = (JSONObject)userInfoJsonObject.get("kakao_account");
+        JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
+        JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
 
-        String email;
-        try{
-            email = kakaoAccountJsonObject.get("email").toString();
-        }
-        catch (Exception e){
-            email = "약관 동의 안함";
-        }
+        String nickname = properties.getAsJsonObject().get("nickname").getAsString();
+        String profileImage = properties.getAsJsonObject().get("profile_image").getAsString();
+        String email = kakao_account.getAsJsonObject().get("email").getAsString();
 
-        model.addAttribute("profile_image", profileImage);
+        model.addAttribute("accessToken", jacksonMap.get("access_token"));
+        model.addAttribute("nickname", nickname);
         model.addAttribute("email", email);
+        model.addAttribute("profileImage", profileImage);
 
-        return "success";
-    }
 
-    private JSONObject convertToJsonObject(String jsonString) throws ParseException {
-        JSONParser parser = new JSONParser();
-        return  (JSONObject) parser.parse(jsonString);
+        log.info(userInfo);
+//
+//        String profileImage = propertiesJsonObject.get("profile_image").toString();
+//
+//        JSONObject kakaoAccountJsonObject = (JSONObject)userInfoJsonObject.get("kakao_account");
+//
+//        String email;
+//        try{
+//            email = kakaoAccountJsonObject.get("email").toString();
+//        }
+//        catch (Exception e){
+//            email = "약관 동의 안함";
+//        }
+//
+//        model.addAttribute("profile_image", profileImage);
+//        model.addAttribute("email", email);
+
+        return "board/list";
     }
 }
