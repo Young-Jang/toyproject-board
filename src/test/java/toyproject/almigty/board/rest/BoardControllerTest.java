@@ -31,6 +31,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static toyproject.almigty.common.constants.BoardApiUrl.GET_BOARD_LIST;
+import static toyproject.almigty.common.constants.BoardApiUrl.GET_BOARD_POST_PAGE;
 
 @MockBean(JpaMetamodelMappingContext.class)
 @WebMvcTest(BoardController.class)
@@ -64,14 +65,26 @@ class BoardControllerTest {
     @DisplayName("게시판 리스트를 조한다.")
     void getList() throws Exception{
         //given
-
         //when
         ResultActions result = this.mockMvc.perform(
                 MockMvcRequestBuilders.get(GET_BOARD_LIST)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
         );
+        //then
+    }
 
+
+    @Test
+    @DisplayName("게시판 글쓰기 화면을 호출한다.")
+    void getWritePost() throws Exception{
+        //given
+        //when
+        ResultActions result = this.mockMvc.perform(
+                MockMvcRequestBuilders.post(GET_BOARD_POST_PAGE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
         //then
     }
 
