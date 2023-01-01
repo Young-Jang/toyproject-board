@@ -1,7 +1,6 @@
 package toyproject.almigty.board.domain.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import toyproject.almigty.board.domain.command.CreateMemberCommand;
 
 import javax.persistence.Entity;
@@ -12,6 +11,9 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
