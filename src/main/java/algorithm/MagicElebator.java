@@ -1,4 +1,6 @@
-class Solution {
+package algorithm;
+
+class Solution3 {
     public int solution(int storey) {
         int answer = 0;
         int nextPlus = 0;
