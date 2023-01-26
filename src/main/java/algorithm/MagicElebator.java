@@ -1,7 +1,7 @@
 package algorithm;
 
-class Solution3 {
-    public int solution(int storey) {
+class MagicElebator {
+    public int MagicElebator(int storey) {
         int answer = 0;
         int nextPlus = 0;
         int[] numArr = new int[10];

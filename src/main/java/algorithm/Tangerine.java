@@ -1,8 +1,8 @@
 package algorithm;//1
 import java.util.*;
 
-class Solution2 {
-    public int solution(int k, int[] tangerine) {
+class Tangerine {
+    public int Tangerine(int k, int[] tangerine) {
         int answer = 0;
         HashMap<Integer,Integer> map =new HashMap<>();
 

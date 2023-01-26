@@ -98,7 +98,7 @@ import java.util.*;
 import java.util.*;
 
 //다익스트라 올바른 풀이
-class Solution4 {
+class StrongArmyBack {
     List<List<Integer>> graph;
     Queue<Integer> q;
     int []minDis;
@@ -120,7 +120,7 @@ class Solution4 {
         }
     }
 
-    public int[] solution(int n, int[][] roads, int[] sources, int destination) {
+    public int[] StrongArmyBack(int n, int[][] roads, int[] sources, int destination) {
         int[] answer = new int[sources.length];
         minDis = new int[n+1];
         graph = new ArrayList<>();
