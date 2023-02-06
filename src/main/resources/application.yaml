@@ -15,11 +15,25 @@ spring:
         # show_sql: true
         format_sql: true
     database: h2
-logging.level:
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          google:
+#            client-id: 411248812193-4l1bma5db82rdig55dg12u9cs2f5vbqk.apps.googleusercontent.com
+#            client-secret: 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
+#            scope: email,profile
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled=true:logging.level:
   org.hibernate.SQL: debug
 # org.hibernate.type: trace
+
 ---
 spring:
   config:
     activate:
       on-profile: test
+
+

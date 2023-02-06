@@ -7,6 +7,10 @@ class Dictionary {
     int cnt = 1;
 
     public void makeWord(String word){
+        Arrays.stream(strArr).forEach(s->{
+            int idx = s.charAt(s.length()-1);
+            s.substring(0,s.length()-1);
+        });
         if(word.length()==5){
             map.put(word,cnt++);
             return;
