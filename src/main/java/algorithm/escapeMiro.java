@@ -1,4 +1,5 @@
 package algorithm;
+import java.util.*;
 
 public class escapeMiro {
     int []dx = {0,1,0,-1};
